@@ -1,12 +1,17 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 )
 
 func (app *application) VirtualTerminal(w http.ResponseWriter, r *http.Request) {
-	if err := app.renderTemplate(w, r, "terminal", nil); err != nil {
+	stringMap := make(map[string]string)
+	stringMap["publishable_key"] = app.config.stripe.key
+
+	td := &templateData{
+		StringMap: stringMap,
+	}
+	if err := app.renderTemplate(w, r, "terminal", td); err != nil {
 		app.errorLog.Println(err)
 	}
 }
@@ -17,8 +22,6 @@ func (app *application) PaymentSucceeded(w http.ResponseWriter, r *http.Request)
 		app.errorLog.Println(err)
 		return
 	}
-
-	fmt.Println("FORM", r.Form)
 
 	// read posted data
 	cardHolder := r.Form.Get("cardholder_name")

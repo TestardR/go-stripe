@@ -67,7 +67,7 @@ Virtual Terminal
         const processing = document.getElementById("processing-payment");
 
 
-        stripe = Stripe('pk_test_KqQCUVAq099NgvqOPtvQ3jJg');
+        stripe = Stripe({{index .StringMap "publishable_key"}});
 
         function hidePayButton() {
         payButton.classList.add("d-none");
